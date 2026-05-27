@@ -1214,6 +1214,7 @@ img { max-width: 100%; }
 }
 
 .car-emoji { font-size: 1.75rem; }
+.car-img { width: 80px; height: 48px; object-fit: contain; flex-shrink: 0; }
 .car-info { flex: 1; }
 .car-info h4 { font-size: 0.9375rem; font-weight: var(--font-weight-bold); }
 .car-info p { font-size: 0.8125rem; color: var(--grey-300); }

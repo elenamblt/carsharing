@@ -517,9 +517,9 @@ function Insurance({ data, onChange }) {
 
 function BookRide({ data, onChange }) {
   const cars = [
-    { id: 'vw-id3', emoji: '🚗', name: 'VW ID.3', type: 'Elektro', dist: '120m' },
-    { id: 'skoda-octavia', emoji: '🚙', name: 'Škoda Octavia', type: 'Kombi', dist: '350m' },
-    { id: 'bmw-i3', emoji: '⚡', name: 'BMW i3', type: 'Elektro', dist: '500m' },
+    { id: 'mini-cabrio', img: '/mini-cabrio.webp', name: 'MINI Cabrio', type: 'Cabrio', dist: '120m' },
+    { id: 'vw-id3', img: '/mini-cabrio.webp', name: 'VW ID.3', type: 'Elektro', dist: '350m' },
+    { id: 'skoda-octavia', img: '/mini-cabrio.webp', name: 'Škoda Octavia', type: 'Kombi', dist: '500m' },
   ]
 
   const [now] = useState(() => {
@@ -554,7 +554,7 @@ function BookRide({ data, onChange }) {
             className={`car-card ${data.car === car.id ? 'selected' : ''}`}
             onClick={() => onChange({ ...data, car: car.id })}
           >
-            <div className="car-emoji">{car.emoji}</div>
+            <img className="car-img" src={car.img} alt={car.name} />
             <div className="car-info">
               <h4>{car.name}</h4>
               <p>{car.type}</p>
@@ -590,9 +590,9 @@ function BookRide({ data, onChange }) {
 
 function Confirmation({ licenseData, paymentData, insuranceData, rideData }) {
   const carNames = {
+    'mini-cabrio': 'MINI Cabrio',
     'vw-id3': 'VW ID.3',
     'skoda-octavia': 'Škoda Octavia',
-    'bmw-i3': 'BMW i3',
   }
   const methodNames = {
     twint: 'TWINT',
