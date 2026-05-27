@@ -83,37 +83,11 @@ function Preparation() {
 
 function PersonalDetails({ data, onChange }) {
   const update = (field, value) => onChange({ ...data, [field]: value })
-  const hasOcrData = data.firstName || data.lastName || data.dob
 
   return (
     <>
       <h2>Kontaktdaten</h2>
-      <p className="step-desc">
-        {hasOcrData
-          ? 'Wir haben einige Daten aus deinem Führerschein übernommen. Bitte prüfe und ergänze.'
-          : 'Erzähl uns kurz, wer du bist.'}
-      </p>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label className="form-label">Vorname {hasOcrData && data.firstName && <span className="ocr-badge">erkannt</span>}</label>
-          <input
-            className={`form-input ${hasOcrData && data.firstName ? 'ocr-filled' : ''}`}
-            placeholder="Max"
-            value={data.firstName || ''}
-            onChange={(e) => update('firstName', e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Nachname {hasOcrData && data.lastName && <span className="ocr-badge">erkannt</span>}</label>
-          <input
-            className={`form-input ${hasOcrData && data.lastName ? 'ocr-filled' : ''}`}
-            placeholder="Muster"
-            value={data.lastName || ''}
-            onChange={(e) => update('lastName', e.target.value)}
-          />
-        </div>
-      </div>
+      <p className="step-desc">Wie können wir dich erreichen?</p>
 
       <div className="form-group">
         <label className="form-label">E-Mail</label>
@@ -126,26 +100,15 @@ function PersonalDetails({ data, onChange }) {
         />
       </div>
 
-      <div className="form-row">
-        <div className="form-group">
-          <label className="form-label">Telefon</label>
-          <input
-            className="form-input"
-            type="tel"
-            placeholder="+41 79 123 45 67"
-            value={data.phone || ''}
-            onChange={(e) => update('phone', e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Geburtsdatum {hasOcrData && data.dob && <span className="ocr-badge">erkannt</span>}</label>
-          <input
-            className={`form-input ${hasOcrData && data.dob ? 'ocr-filled' : ''}`}
-            type="date"
-            value={data.dob || ''}
-            onChange={(e) => update('dob', e.target.value)}
-          />
-        </div>
+      <div className="form-group">
+        <label className="form-label">Telefon</label>
+        <input
+          className="form-input"
+          type="tel"
+          placeholder="+41 79 123 45 67"
+          value={data.phone || ''}
+          onChange={(e) => update('phone', e.target.value)}
+        />
       </div>
 
       <div className="form-group">
@@ -161,7 +124,7 @@ function PersonalDetails({ data, onChange }) {
   )
 }
 
-function DriversLicense({ data, onChange, onOcrComplete }) {
+function DriversLicense({ data, onChange }) {
   const fileInputRef = useRef(null)
   const [dragOver, setDragOver] = useState(false)
   const [scanning, setScanning] = useState(false)
@@ -179,23 +142,21 @@ function DriversLicense({ data, onChange, onOcrComplete }) {
 
         setScanning(true)
         setTimeout(() => {
-          const ocrData = {
-            licenseNumber: 'CH-284917365',
-            licenseIssued: '2019-03-15',
-            licenseExpiry: '2034-03-15',
-          }
-          onChange((prev) => ({ ...prev, ...ocrData }))
-          onOcrComplete({
+          onChange((prev) => ({
+            ...prev,
             firstName: 'Max',
             lastName: 'Muster',
             dob: '1992-06-14',
-          })
+            licenseNumber: 'CH-284917365',
+            licenseIssued: '2019-03-15',
+            licenseExpiry: '2034-03-15',
+          }))
           setScanning(false)
         }, 1800)
       }
       reader.readAsDataURL(file)
     },
-    [data, onChange, onOcrComplete]
+    [data, onChange]
   )
 
   const handleDrop = useCallback(
@@ -267,7 +228,38 @@ function DriversLicense({ data, onChange, onOcrComplete }) {
             Daten automatisch erkannt — bitte prüfe die Angaben
           </div>
 
-          <div className="form-group" style={{ marginTop: '12px' }}>
+          <div className="form-row" style={{ marginTop: '12px' }}>
+            <div className="form-group">
+              <label className="form-label">Vorname <span className="ocr-badge">erkannt</span></label>
+              <input
+                className="form-input ocr-filled"
+                placeholder="Max"
+                value={data.firstName || ''}
+                onChange={(e) => onChange({ ...data, firstName: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Nachname <span className="ocr-badge">erkannt</span></label>
+              <input
+                className="form-input ocr-filled"
+                placeholder="Muster"
+                value={data.lastName || ''}
+                onChange={(e) => onChange({ ...data, lastName: e.target.value })}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Geburtsdatum <span className="ocr-badge">erkannt</span></label>
+            <input
+              className="form-input ocr-filled"
+              type="date"
+              value={data.dob || ''}
+              onChange={(e) => onChange({ ...data, dob: e.target.value })}
+            />
+          </div>
+
+          <div className="form-group">
             <label className="form-label">Führerschein-Nummer <span className="ocr-badge">erkannt</span></label>
             <input
               className="form-input ocr-filled"
@@ -596,7 +588,7 @@ function BookRide({ data, onChange }) {
   )
 }
 
-function Confirmation({ personalData, paymentData, insuranceData, rideData }) {
+function Confirmation({ licenseData, paymentData, insuranceData, rideData }) {
   const carNames = {
     'vw-id3': 'VW ID.3',
     'skoda-octavia': 'Škoda Octavia',
@@ -616,7 +608,7 @@ function Confirmation({ personalData, paymentData, insuranceData, rideData }) {
   return (
     <div className="confirmation">
       <div className="confirmation-icon">🎉</div>
-      <h2>Alles klar, {personalData.firstName || 'Fahrer'}!</h2>
+      <h2>Alles klar, {licenseData.firstName || 'Fahrer'}!</h2>
       <p>
         Deine erste Fahrt ist gebucht. Du erhältst eine Bestätigung per E-Mail.
       </p>
@@ -710,20 +702,11 @@ export default function Onboarding({ onBack }) {
 
   const progress = isConfirmed ? 100 : ((step + 1) / STEPS.length) * 100
 
-  const handleOcrComplete = useCallback((ocrData) => {
-    setPersonalData((prev) => ({
-      ...prev,
-      firstName: prev.firstName || ocrData.firstName,
-      lastName: prev.lastName || ocrData.lastName,
-      dob: prev.dob || ocrData.dob,
-    }))
-  }, [])
-
   const renderStep = () => {
     if (isConfirmed) {
       return (
         <Confirmation
-          personalData={personalData}
+          licenseData={licenseData}
           paymentData={paymentData}
           insuranceData={insuranceData}
           rideData={rideData}
@@ -734,7 +717,7 @@ export default function Onboarding({ onBack }) {
       case 0:
         return <Preparation />
       case 1:
-        return <DriversLicense data={licenseData} onChange={setLicenseData} onOcrComplete={handleOcrComplete} />
+        return <DriversLicense data={licenseData} onChange={setLicenseData} />
       case 2:
         return <PersonalDetails data={personalData} onChange={setPersonalData} />
       case 3:
