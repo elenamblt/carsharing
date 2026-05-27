@@ -12,11 +12,11 @@ function MobilityLogo({ color = 'currentColor', height = 24 }) {
 
 const STEPS = [
   'Vorbereitung',
+  'Erste Fahrt',
   'Führerschein',
   'Kontaktdaten',
   'Zahlung',
   'Versicherung',
-  'Erste Fahrt',
 ]
 
 const slideVariants = {
@@ -717,15 +717,15 @@ export default function Onboarding({ onBack }) {
       case 0:
         return <Preparation />
       case 1:
-        return <DriversLicense data={licenseData} onChange={setLicenseData} />
-      case 2:
-        return <PersonalDetails data={personalData} onChange={setPersonalData} />
-      case 3:
-        return <PaymentMethod data={paymentData} onChange={setPaymentData} />
-      case 4:
-        return <Insurance data={insuranceData} onChange={setInsuranceData} />
-      case 5:
         return <BookRide data={rideData} onChange={setRideData} />
+      case 2:
+        return <DriversLicense data={licenseData} onChange={setLicenseData} />
+      case 3:
+        return <PersonalDetails data={personalData} onChange={setPersonalData} />
+      case 4:
+        return <PaymentMethod data={paymentData} onChange={setPaymentData} />
+      case 5:
+        return <Insurance data={insuranceData} onChange={setInsuranceData} />
       default:
         return null
     }
