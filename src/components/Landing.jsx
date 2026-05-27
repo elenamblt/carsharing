@@ -65,7 +65,7 @@ export default function Landing({ onStart }) {
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="navbar-logo">
-          <MobilityLogo color={scrolled ? '#1a1a1a' : '#ffffff'} />
+          <MobilityLogo color="#1a1a1a" />
         </div>
         <div className="navbar-links">
           <a href="#how">So funktionierts</a>
@@ -95,7 +95,7 @@ export default function Landing({ onStart }) {
         >
           Dein Auto wartet
           <br />
-          <em>schon auf dich.</em>
+          <span className="text-gradient">schon auf dich.</span>
         </motion.h1>
 
         <motion.p
@@ -117,7 +117,7 @@ export default function Landing({ onStart }) {
           <button className="btn btn-highvis btn-large" onClick={onStart}>
             Erste Fahrt buchen
           </button>
-          <a href="#how" className="btn btn-ghost btn-large">
+          <a href="#how" className="btn btn-secondary btn-large">
             Mehr erfahren
           </a>
         </motion.div>
