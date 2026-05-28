@@ -13,7 +13,10 @@ function App() {
       ) : (
         <Landing onStart={() => setView('onboarding')} />
       )}
-      <Analytics />
+      <Analytics beforeSend={(event) => {
+        if (localStorage.getItem('exclude_analytics')) return null
+        return event
+      }} />
     </>
   )
 }
