@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import Landing from './components/Landing'
 import Onboarding from './components/Onboarding'
 
 function App() {
   const [view, setView] = useState('landing')
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has('exclude')) {
+      localStorage.setItem('exclude_analytics', 'true')
+    }
+  }, [])
 
   return (
     <>
